@@ -88,7 +88,7 @@ header {
 
 aside {
     width: 200px;
-    height: 100%;
+    height: 660px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,10 +122,18 @@ aside {
     border-bottom: solid white 5px;
 }
 
+.token {
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    border-radius: 50px !important;
+    position: absolute;
+}
+
 #game-board {
     aspect-ratio: 1 / 1;
-    max-width: 650px;
-    max-height: 650px;
+    width: 640px;
+    height: 640px;
     align-self: center;
     display: flex;
     flex-direction: column;
