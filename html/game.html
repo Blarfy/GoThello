@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/game.css">
+    <script src="../js/board.js" defer></script>
+    <script src="../js/game.js" defer></script>
+    <title>Othello</title>
+</head>
+
+<body>
+    <div class="vertical-flex">
+        <header class="nav">
+            <p>Othello</p>
+        </header>
+        <div class="section horizontal-flex">
+            <aside id="player1-tokens">
+                <p class="player-name" id="player1-name">Player 1</p>
+                <div class="token-holder" id="player1-token-holder">
+
+                </div>
+                <!--I want to integrate click and drag functionality here-->
+            </aside>
+            <div id="game-board">
+            </div>
+            <aside id="player2-tokens">
+                <p class="player-name" id="player2-name">Player 2</p>
+                <div class="token-holder" id="player2-token-holder">
+
+                </div>
+            </aside>
+        </div>
+        <footer>
+            <div class="button" id="submit-turn">End Turn</div>
+        </footer>
+</body>
+
+</html>
