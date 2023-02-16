@@ -81,6 +81,7 @@ const tokenClickDrag = (isPlayer1) => {
             console.log(tokenSlot)
             tokenSlot.appendChild(token)
             token.style.position = "static"
+            // UPDATE TOKEN ARRAY HERE
             if (isPlayer1) {
                 player1TokenCount--
             } else {
