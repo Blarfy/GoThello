@@ -210,7 +210,100 @@ function placeDiagonal(team, x, y) {
             board.grid[x + i][y + i] = team
         }
     }
- }
+}
+
+/**
+ * ai checks for which spot would capture the most tiles.
+ * if no spot would capture tiles, it will place a tile next to player 1's tiles
+ * if no spot would capture tiles and there are no tiles next to player 1's tiles, it will place a tile in a random spot
+ * 
+ * NOTE: currently does not check if board is full. check if game is over before calling this function, or add a check within.
+*/
+function aiTurn() {
+    let bestX = 0
+    let bestY = 0
+    let bestCount = 0
+
+    for (x = 0; x < board.grid.length; x++) {
+        for (y = 0; y < board.grid.length; y++) {
+            if (board.grid[x][y] === null) {
+                let count = 0
+                count += checkDiagonal(false, x, y, false, false)
+                count += checkDiagonal(false, x, y, true, false)
+                count += checkDiagonal(false, x, y, false, true)
+                count += checkDiagonal(false, x, y, true, true)
+                //TODO: need checkHorVert function to just check, not place tiles
+                //count += checkHorVert(false, x, y)
+                if (count > bestCount) {
+                    bestCount = count
+                    bestX = x
+                    bestY = y
+                }
+            }
+        }
+    }
+
+    if (bestCount > 0) {
+        //place tile
+        board.grid[bestX][bestY] = false
+        placeDiagonal(false, bestX, bestY)
+        checkHorVertCapture(false, bestX, bestY)
+        turns++
+    } else {
+        //no captures, place tile next to player 1's tiles
+        let x = 0
+        let y = 0
+        let found = false
+
+        //collect list of all tiles next to player 1's tiles
+        let tiles = []
+        for (x = 0; x < board.grid.length; x++) {
+            for (y = 0; y < board.grid.length; y++) {
+                if (board.grid[x][y] === true) {
+                    if (x > 0 && board.grid[x - 1][y] === null) {
+                        tiles.push([x - 1, y])
+                    }
+                    if (x < board.grid.length - 1 && board.grid[x + 1][y] === null) {
+                        tiles.push([x + 1, y])
+                    }
+                    if (y > 0 && board.grid[x][y - 1] === null) {
+                        tiles.push([x, y - 1])
+                    }
+                    if (y < board.grid.length - 1 && board.grid[x][y + 1] === null) {
+                        tiles.push([x, y + 1])
+                    }
+                }
+            }
+        }
+
+        //place one of the adjacent tiles at random
+        if (tiles.length > 0) {
+            found = true
+            //choose random tile
+            let rand = Math.floor(Math.random() * tiles.length)
+            let chosex = tiles[rand][0]
+            let chosey = tiles[rand][1]
+            board.grid[chosex][chosey] = false
+            placeDiagonal(false, chosex, chosey)
+            checkHorVertCapture(false, chosex, chosey)
+            turns++
+        } else {
+            //place any tile at random
+            while (!found) {
+                x = Math.floor(Math.random() * board.grid.length)
+                y = Math.floor(Math.random() * board.grid.length)
+                if (board.grid[x][y] === null) {
+                    found = true
+                    board.grid[x][y] = false
+                    placeDiagonal(false, x, y)
+                    checkHorVertCapture(false, x, y)
+                    turns++
+                }
+            }
+        }
+    }
+}
+
 
 // Sorry for bad function name
 function checkHorVertCapture(board, row, col) {
