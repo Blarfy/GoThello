@@ -44,14 +44,10 @@ const fillTokens = () => {
 // If not, the turn should be skipped, turn++
 // Should also add a check to see if the player has any tokens left
 // If not, have them take tokens from the other players holder
-const tokenClickDrag = (isPlayer1) => {
+const tokenClickDrag = (isPlayer1, token_in) => {
     let token;
-    if (isPlayer1) {
-        token = player1TokenHolder.firstElementChild
-    } else {
-        token = player2TokenHolder.firstElementChild
-    }
-    console.log(token)
+    token = token_in
+    let tokenHolder = token.parentElement
     let windowX = window.event.clientX
     let windowY = window.event.clientY
     token.classList.remove("token-sideways")
@@ -60,11 +56,10 @@ const tokenClickDrag = (isPlayer1) => {
     token.style.top = `${windowY - 35}px`
     if (isPlayer1) {
         token.style.backgroundColor = "black"
-        player1TokenHolder.removeChild(token)
     } else {
         token.style.backgroundColor = "white"
-        player2TokenHolder.removeChild(token)
     }
+    tokenHolder.removeChild(token)
     document.body.appendChild(token)
     const moveToken = () => {
         windowX = window.event.clientX
@@ -93,30 +88,38 @@ const tokenClickDrag = (isPlayer1) => {
             token.classList.remove("token")
             token.classList.add("token-sideways")
             if (isPlayer1) {
-                player1TokenHolder.appendChild(token)
+                tokenHolder.appendChild(token)
             } else {
-                player2TokenHolder.appendChild(token)
+                tokenHolder.appendChild(token)
             }
             
         }
     }, {once: true})
 }
 
-player1TokenHolder.addEventListener("mousedown", () => {
+player1TokenHolder.addEventListener("mousedown", (event) => {
     if (turns % 2 === 0) {
         isPlayer1 = true
     } else {
         isPlayer1 = false
     }
-    tokenClickDrag(isPlayer1)
+    console.log(event.target)
+    console.log(player1TokenHolder)
+    if (event.target != player1TokenHolder && event.target != player2TokenHolder) {
+        tokenClickDrag(isPlayer1, event.target)
+    }
 })
-player2TokenHolder.addEventListener("mousedown", () => {
+player2TokenHolder.addEventListener("mousedown", (event) => {
     if (turns % 2 === 0) {
         isPlayer1 = true
     } else {
         isPlayer1 = false
     }
-    tokenClickDrag(isPlayer1)
+    console.log(event.target)
+    console.log(player2TokenHolder)
+    if (event.target != player1TokenHolder && event.target != player2TokenHolder) {
+        tokenClickDrag(isPlayer1, event.target)
+    }
 })
 
 
@@ -212,6 +215,7 @@ function placeDiagonal(team, x, y) {
     }
  }
 
+// Split the function into two functions one for checkking, one for placing
 // Sorry for bad function name
 function checkHorVertCapture(board, row, col) {
     // Grab position of the placed piece
