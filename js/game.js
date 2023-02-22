@@ -10,22 +10,44 @@ const generateBoard = () => {
         for (let index_X = 0; index_X < board.grid[index_Y].length; index_X++) {
             let tile = document.createElement("div")
             tile.classList.add("tile")
-            // tile.ondrop = (event) => {
-            //     console.log(event.target)
-            // }
             tile.id = `${index_X}-${index_Y}`
             row.appendChild(tile)
+            if (index_X === 3 && index_Y === 3) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "white"
+                tile.appendChild(token)
+                board.grid[index_X][index_Y] = false
+            } else if (index_X === 4 && index_Y === 4) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "white"
+                tile.appendChild(token)
+                board.grid[index_X][index_Y] = false
+            } if (index_X === 3 && index_Y === 4) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "black"
+                tile.appendChild(token)
+                board.grid[index_X][index_Y] = true
+            } else if (index_X === 4 && index_Y === 3) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "black"
+                tile.appendChild(token)
+                board.grid[index_X][index_Y] = true
+            }
         }
         gameBoard.appendChild(row)
     }
 }
 
 const player1TokenHolder = document.getElementById("player1-token-holder")
-let player1TokenCount = 32
+let player1TokenCount = 30
 const player2TokenHolder = document.getElementById("player2-token-holder")
-let player2TokenCount = 32
+let player2TokenCount = 30
 const fillTokens = () => {
-    for (let index = 0; index < (board.grid.length * board.grid[0].length); index++) {
+    for (let index = 0; index < (player1TokenCount + player2TokenCount); index++) {
         let token = document.createElement("div")
         token.classList.add("token-sideways")
         if (index % 2 === 0) {
@@ -67,21 +89,19 @@ const tokenClickDrag = (isPlayer1, token_in) => {
         token.style.left = `${windowX - 35}px`
         token.style.top = `${windowY - 35}px`
     }
-    token.addEventListener("mousemove", moveToken)
+    document.body.addEventListener("mousemove", moveToken)
     document.body.addEventListener("mouseup", (event) => {
-        token.removeEventListener("mousemove", moveToken)
+        document.body.removeEventListener("mousemove", moveToken)
         document.body.removeChild(token)
         let tokenSlot = document.elementFromPoint(windowX, windowY)
         if (tokenSlot.classList.contains("tile")) {
             console.log(tokenSlot)
-            tokenSlot.appendChild(token)
-            token.style.position = "static"
             // UPDATE TOKEN ARRAY HERE
-            if (isPlayer1) {
-                player1TokenCount--
-            } else {
-                player2TokenCount--
-            }
+            let coordinates = tokenSlot.id
+            let x = parseInt(coordinates[0])
+            let y = parseInt(coordinates[2])
+            board.grid[x][y] = isPlayer1
+            renderBoard()
             turns++
         } else {
             console.log("Nope")
@@ -121,6 +141,30 @@ player2TokenHolder.addEventListener("mousedown", (event) => {
         tokenClickDrag(isPlayer1, event.target)
     }
 })
+
+const skipTurn = () => {
+    turns++
+}
+
+const renderBoard = () => {
+    for (let index_Y = 0; index_Y < board.grid.length; index_Y++) {
+        for (let index_X = 0; index_X < board.grid[index_Y].length; index_X++) {
+            let tile = document.getElementById(`${index_X}-${index_Y}`)
+            tile.innerHTML = ""
+            if (board.grid[index_X][index_Y] === true) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "black"
+                tile.appendChild(token)
+            } else if (board.grid[index_X][index_Y] === false) {
+                let token = document.createElement("div")
+                token.classList.add("token")
+                token.style.backgroundColor = "white"
+                tile.appendChild(token)
+            }
+        }
+    }
+}
 
 
 /**
