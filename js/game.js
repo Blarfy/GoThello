@@ -261,8 +261,6 @@ function placeDiagonal(team, x, y) {
 
 /**
  * ai checks for which spot would capture the most tiles.
- * if no spot would capture tiles, it will place a tile next to player 1's tiles
- * if no spot would capture tiles and there are no tiles next to player 1's tiles, it will place a tile in a random spot
  * 
  * NOTE: currently does not check if board is full. check if game is over before calling this function, or add a check within.
 */
@@ -279,8 +277,7 @@ function aiTurn() {
                 count += checkDiagonal(false, x, y, true, false)
                 count += checkDiagonal(false, x, y, false, true)
                 count += checkDiagonal(false, x, y, true, true)
-                //TODO: need checkHorVert function to just check, not place tiles
-                //count += checkHorVert(false, x, y)
+                if(checkHorVertCapture(false, x, y) !== null) count += checkHorVertCapture(false, x, y).length
                 if (count > bestCount) {
                     bestCount = count
                     bestX = x
@@ -297,57 +294,8 @@ function aiTurn() {
         checkHorVertCapture(false, bestX, bestY)
         turns++
     } else {
-        //no captures, place tile next to player 1's tiles
-        let x = 0
-        let y = 0
-        let found = false
-
-        //collect list of all tiles next to player 1's tiles
-        let tiles = []
-        for (x = 0; x < board.grid.length; x++) {
-            for (y = 0; y < board.grid.length; y++) {
-                if (board.grid[x][y] === true) {
-                    if (x > 0 && board.grid[x - 1][y] === null) {
-                        tiles.push([x - 1, y])
-                    }
-                    if (x < board.grid.length - 1 && board.grid[x + 1][y] === null) {
-                        tiles.push([x + 1, y])
-                    }
-                    if (y > 0 && board.grid[x][y - 1] === null) {
-                        tiles.push([x, y - 1])
-                    }
-                    if (y < board.grid.length - 1 && board.grid[x][y + 1] === null) {
-                        tiles.push([x, y + 1])
-                    }
-                }
-            }
-        }
-
-        //place one of the adjacent tiles at random
-        if (tiles.length > 0) {
-            found = true
-            //choose random tile
-            let rand = Math.floor(Math.random() * tiles.length)
-            let chosex = tiles[rand][0]
-            let chosey = tiles[rand][1]
-            board.grid[chosex][chosey] = false
-            placeDiagonal(false, chosex, chosey)
-            checkHorVertCapture(false, chosex, chosey)
-            turns++
-        } else {
-            //place any tile at random
-            while (!found) {
-                x = Math.floor(Math.random() * board.grid.length)
-                y = Math.floor(Math.random() * board.grid.length)
-                if (board.grid[x][y] === null) {
-                    found = true
-                    board.grid[x][y] = false
-                    placeDiagonal(false, x, y)
-                    checkHorVertCapture(false, x, y)
-                    turns++
-                }
-            }
-        }
+        //no moves, skip turn
+        turns++
     }
 }
 
@@ -355,8 +303,8 @@ function aiTurn() {
  * Checks for horizontal and vertical captures on the board corresponding
  * to the position of a placed piece
  * 
- * @param { Board } board 
- * A board class object
+ * @param { boolean } team
+ * Should be true for player 1 and false for player 2
  * @param { int } row 
  * The row coordinate for the placed piece (x)
  * @param { int } col 
@@ -365,9 +313,9 @@ function aiTurn() {
  * Returns an array of captured pieces if a capture is found, 
  * if no capture is found, returns null
  */
-function checkHorVertCapture(board, row, col) {
+function checkHorVertCapture(team, row, col) {
     // Not the position of the placed piece, the value of the placed piece my bad
-    const placedPiece = board[row][col];
+    const placedPiece = team;
 
     // An array which holds all the captured pieces
     const capturedPieces = [];
@@ -380,6 +328,9 @@ function checkHorVertCapture(board, row, col) {
         { row: 1, col: 0 } // Step down (South)
     ];
     // Remember dumbass, negatives are left and down, positives are rights and ups (Personal note)
+
+    // NOTE: this function looks like it will end early, as once it reaches a null tile or another of the same team when moving left, it will return. 
+    // This may need to be changed. (June)
 
     for (const step of stepDirection) {
         // Steps once just to move off of the placed piece's position
