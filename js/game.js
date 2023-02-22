@@ -351,12 +351,26 @@ function aiTurn() {
     }
 }
 
-
-// Split the function into two functions one for checkking, one for placing
-// Sorry for bad function name
+/**
+ * Checks for horizontal and vertical captures on the board corresponding
+ * to the position of a placed piece
+ * 
+ * @param { Board } board 
+ * A board class object
+ * @param { int } row 
+ * The row coordinate for the placed piece (x)
+ * @param { int } col 
+ * The column coordinate for the placed piece (y)
+ * @returns { (Array<{ row: x, col: y }> | null) } 
+ * Returns an array of captured pieces if a capture is found, 
+ * if no capture is found, returns null
+ */
 function checkHorVertCapture(board, row, col) {
-    // Grab position of the placed piece
+    // Not the position of the placed piece, the value of the placed piece my bad
     const placedPiece = board[row][col];
+
+    // An array which holds all the captured pieces
+    const capturedPieces = [];
 
     // Check all directions using step system (Horizontal and Vertical)
     const stepDirection = [
@@ -365,13 +379,10 @@ function checkHorVertCapture(board, row, col) {
         { row: -1, col: 0 }, // Step up (North)
         { row: 1, col: 0 } // Step down (South)
     ];
-    // Remember dumbass, negatives are left and down, positives are rights and ups
+    // Remember dumbass, negatives are left and down, positives are rights and ups (Personal note)
 
     for (const step of stepDirection) {
-        // An array which holds all the captured pieces
-        const capturedPieces = [];
-
-        // Steps once just to move off of the placePiece's position
+        // Steps once just to move off of the placed piece's position
         let r = row + step.row;
         let c = col + step.col;
 
@@ -381,18 +392,14 @@ function checkHorVertCapture(board, row, col) {
             // Grab position of next piece
             const currentPiece = board.grid[r][c];
 
-            // If 'currentPiece' is null, then just break the loop, no captured pieces
+            // If 'currentPiece' is null, then just return null, no captured pieces
             if (currentPiece === null) {
-                break;
+                return null;
             }
 
             // If 'currentPiece' is same color/value of 'placedPiece', we have reached the end of the capture
             if (currentPiece === placedPiece) {
-                // Loop through all stored positions of captured pieces and change their color/value on the board
-                capturedPieces.forEach(position => {
-                    board.grid[position.row][position.col] = placedPiece;
-                });
-                break;
+                return capturedPieces;
             }
 
             // Add the current piece to the captured pieces list
@@ -403,6 +410,24 @@ function checkHorVertCapture(board, row, col) {
             c += step.col;
         }
     }
+}
+
+/**
+ * Flips pieces on the board according to an array with
+ * coordinates of captured pieces
+ * 
+ * @param { Board } board 
+ * A board class object
+ * @param { { row: x, col: y } } capturedPieces 
+ * An array with coordinates of captured pieces
+ * @param { boolean } pieceValue 
+ * The value/color of the piece you want to change captured pieces to
+ */
+function flipCapturedPieces(board, capturedPieces, pieceValue) {
+    // Loop through all stored positions of captured pieces and change their color/value on the board
+    capturedPieces.forEach(position => {
+        board.grid[position.row][position.col] = pieceValue;
+    });
 }
 
 window.onload = generateBoard()
