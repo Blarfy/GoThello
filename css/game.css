@@ -132,6 +132,40 @@ aside {
     position: absolute;
 }
 
+@keyframes token-black-flip-white {
+    0% {
+        transform: rotateY(0deg);
+        background-color: black;
+    }
+    25% {
+        background-color: black;
+    }
+    35% {
+        background-color: white;
+    }
+    100% {
+        transform: rotateY(180deg);
+        background-color: white;
+    }
+}
+
+@keyframes token-white-flip-black {
+    0% {
+        transform: rotateY(0deg);
+        background-color: white;
+    }
+    25% {
+        background-color: white;
+    }
+    35% {
+        background-color: black;
+    }
+    100% {
+        transform: rotateY(180deg);
+        background-color: black;
+    }
+}
+
 #game-board {
     aspect-ratio: 1 / 1;
     width: 640px;

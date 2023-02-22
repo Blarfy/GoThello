@@ -66,6 +66,8 @@ const fillTokens = () => {
 // If not, the turn should be skipped, turn++
 // Should also add a check to see if the player has any tokens left
 // If not, have them take tokens from the other players holder
+// isPlayer1 is a boolean that is essentially the token value
+// true = black, false = white
 const tokenClickDrag = (isPlayer1, token_in) => {
     let token;
     token = token_in
@@ -143,7 +145,7 @@ player2TokenHolder.addEventListener("mousedown", (event) => {
 })
 
 const skipTurn = () => {
-    turns++
+    popupConfirm("Are you sure you want to skip your turn?", () => { turns++} )
 }
 
 const renderBoard = () => {
@@ -165,6 +167,36 @@ const renderBoard = () => {
         }
     }
 }
+
+// Flips the token at the given coordinates
+// This function is all that should be needed to change the board state
+// It updates the board.grid array and applies the animation to the token
+// If necesarry it can be modified to not update the board.grid array
+const flipToken = (x, y) => {
+    let tile = document.getElementById(`${x}-${y}`)
+    if (board.grid[x][y] === true) {
+        tile.firstChild.style.animation = "token-black-flip-white 0.6s forwards"
+    } else if (board.grid[x][y] === false) {
+        tile.firstChild.style.animation = "token-white-flip-black 0.6s forwards"
+    }
+    board.grid[x][y] = !board.grid[x][y]
+} 
+
+// This function is only called from the console for developement purposes
+// Applies the flipToken function to all tiles as a click event listener
+const applyEventListeners = () => {
+    for (let index_Y = 0; index_Y < board.grid.length; index_Y++) {
+        for (let index_X = 0; index_X < board.grid[index_Y].length; index_X++) {
+            let tile = document.getElementById(`${index_X}-${index_Y}`)
+            if (tile.firstElementChild != null) {
+                tile.firstChild.addEventListener("click", () => {
+                    flipToken(index_X, index_Y)
+                })
+            }
+        }
+    }
+}
+
 
 
 /**
