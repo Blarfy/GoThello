@@ -104,9 +104,9 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             let y = parseInt(coordinates[2])
             if (canPlace(isPlayer1, x, y)) {
                 board.grid[x][y] = isPlayer1
+                renderBoard()
                 placeDiagonal(isPlayer1, x, y)
                 placeHorVert(isPlayer1, x, y)
-                renderBoard()
                 turns++
             } else {
                 console.log("Nope")
