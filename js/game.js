@@ -102,21 +102,52 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             let coordinates = tokenSlot.id
             let x = parseInt(coordinates[0])
             let y = parseInt(coordinates[2])
-            board.grid[x][y] = isPlayer1
-            renderBoard()
-            turns++
+            if (canPlace(isPlayer1, x, y)) {
+                board.grid[x][y] = isPlayer1
+                placeDiagonal(isPlayer1, x, y)
+                placeHorVert(isPlayer1, x, y)
+                renderBoard()
+                turns++
+            } else {
+                console.log("Nope")
+                token.classList.remove("token")
+                token.classList.add("token-sideways")
+                tokenHolder.appendChild(token)
+            }
         } else {
             console.log("Nope")
             token.classList.remove("token")
             token.classList.add("token-sideways")
-            if (isPlayer1) {
-                tokenHolder.appendChild(token)
-            } else {
-                tokenHolder.appendChild(token)
-            }
+            tokenHolder.appendChild(token)
             
         }
     }, {once: true})
+}
+
+const canPlace = (isPlayer1, x, y) => {
+    let count = checkDiagonal(isPlayer1, x, y, false, false)
+    console.log(count + ": 1")
+    count += checkDiagonal(isPlayer1, x, y, true, false)
+    console.log(count + ": 2")
+    count += checkDiagonal(isPlayer1, x, y, false, true)
+    console.log(count + ": 3")
+    count += checkDiagonal(isPlayer1, x, y, true, true)
+    console.log(count + ": 4")
+    count += checkHorVert(isPlayer1, x, y, null, false)
+    console.log(count + ": 5")
+    count += checkHorVert(isPlayer1, x, y, null, true)
+    console.log(count + ": 6")
+    count += checkHorVert(isPlayer1, x, y, false, null)
+    console.log(count + ": 7")
+    count += checkHorVert(isPlayer1, x, y, true, null)
+    console.log(count + ": 8")
+
+
+    if (count > 0) {
+        return true
+    } else {
+        return false
+    }
 }
 
 player1TokenHolder.addEventListener("mousedown", (event) => {
@@ -356,6 +387,62 @@ function placeDiagonal(team, x, y) {
         }
     }
 }
+
+
+
+//two-dimentional array
+let array = [];
+
+//8 rows
+for (let i = 0; i < 8; i++) {
+    array[i] = [];
+    //8 columns
+    for (let j = 0; j < 8; j++) {
+    array[i][j] = false;
+    }
+}
+// Set some values to true
+array[1][1] = true;
+array[2][0] = true;
+
+
+let player1TotalTokens = 0;
+let player2TotalTokens = 0;
+
+  // Get a reference to the div element
+// const start_container = document.getElementById('start_container');
+
+  // Attach a click event listener to the div element
+// start_container.addEventListener('click', function() {
+//     // Call your function here
+//     checkWin(array);
+// });
+
+
+
+
+// Print the array
+// console.log(array);
+
+function checkWin(array) {
+    // Loop through the rows of the array
+for (let i = 0; i < array.length; i++) {
+    // Loop through the columns of the current row
+    for (let j = 0; j < array[i].length; j++) {
+      // Check if the current element is false
+            if (array[i][j] === false) {
+            player2TotalTokens++;
+            } else {
+                player1TotalTokens++;
+            }
+        }
+    }
+    console.log("player 1 total token(true/black)");
+    console.log(player1TotalTokens);
+    console.log("player 2 total token(white/black)");
+    console.log(player2TotalTokens);
+}
+
 
 /**
  * checks for and places a horizontal or vertical capture
