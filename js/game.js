@@ -102,7 +102,7 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             let coordinates = tokenSlot.id
             let x = parseInt(coordinates[0])
             let y = parseInt(coordinates[2])
-            if (true) { //canPlace(isPlayer1, x, y)
+            if (canPlace(isPlayer1, x, y)) {
                 board.grid[x][y] = isPlayer1
                 renderBoard()
                 placeDiagonal(isPlayer1, x, y)
