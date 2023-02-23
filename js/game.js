@@ -102,7 +102,7 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             let coordinates = tokenSlot.id
             let x = parseInt(coordinates[0])
             let y = parseInt(coordinates[2])
-            if (canPlace(isPlayer1, x, y)) {
+            if (true) { //canPlace(isPlayer1, x, y)
                 board.grid[x][y] = isPlayer1
                 renderBoard()
                 placeDiagonal(isPlayer1, x, y)
@@ -270,10 +270,16 @@ function checkDiagonal(team, x, y, dirX, dirY) {
     let count = 0
     let capture = false
     for (i = 1; i < loops; i++) {
+        console.log("Diagonal -----------------")
+        console.log("xPath: " + xPath)
+        console.log("yPath: " + yPath)
+        console.log("I: " + i)
+        console.log("Loops: " + loops)
         if (board.grid[x + i * xPath][y + i * yPath] !== team && board.grid[x + i * xPath][y + i * yPath] !== null) {
             count++
         } else if (board.grid[x + i * xPath][y + i * yPath] === team) {
             capture = true
+            console.log("CAPTURE")
             break
         } else break
     }
@@ -313,6 +319,11 @@ function checkHorVert(team, x, y, dirX, dirY) {
         let count = 0
         let capture = false
         for (i = 1; i < loops; i++) {
+            console.log("Vertical -----------------")
+            console.log("xPath: " + xPath)
+            console.log("yPath: " + yPath)
+            console.log("I: " + i)
+            console.log("Loops: " + loops)
             if (board.grid[x][y + i * yPath] !== team && board.grid[x][y + i * yPath] !== null) {
                 count++
             } else if (board.grid[x][y + i * yPath] === team) {
@@ -330,6 +341,11 @@ function checkHorVert(team, x, y, dirX, dirY) {
         let count = 0
         let capture = false
         for (i = 1; i < loops; i++) {
+            console.log("Horizontal -----------------")
+            console.log("xPath: " + xPath)
+            console.log("yPath: " + yPath)
+            console.log("I: " + i)
+            console.log("Loops: " + loops)
             if (board.grid[x + i * xPath][y] !== team && board.grid[x + i * xPath][y] !== null) {
                 count++
             } else if (board.grid[x + i * xPath][y] === team) {
