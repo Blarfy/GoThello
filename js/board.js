@@ -4,6 +4,11 @@ class Board {
         for (let i = 0; i < this.grid.length; i++) {
             this.grid[i] = new Array(8);
         }
+        for (let i = 0; i < this.grid.length; i++) {
+            for (let j = 0; j < this.grid[i].length; j++) {
+                this.grid[i][j] = null;
+            }
+        }
     }
 
     clearBoard() {

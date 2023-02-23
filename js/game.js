@@ -102,21 +102,52 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             let coordinates = tokenSlot.id
             let x = parseInt(coordinates[0])
             let y = parseInt(coordinates[2])
-            board.grid[x][y] = isPlayer1
-            renderBoard()
-            turns++
+            if (canPlace(isPlayer1, x, y)) {
+                board.grid[x][y] = isPlayer1
+                placeDiagonal(isPlayer1, x, y)
+                placeHorVert(isPlayer1, x, y)
+                renderBoard()
+                turns++
+            } else {
+                console.log("Nope")
+                token.classList.remove("token")
+                token.classList.add("token-sideways")
+                tokenHolder.appendChild(token)
+            }
         } else {
             console.log("Nope")
             token.classList.remove("token")
             token.classList.add("token-sideways")
-            if (isPlayer1) {
-                tokenHolder.appendChild(token)
-            } else {
-                tokenHolder.appendChild(token)
-            }
+            tokenHolder.appendChild(token)
             
         }
     }, {once: true})
+}
+
+const canPlace = (isPlayer1, x, y) => {
+    let count = checkDiagonal(isPlayer1, x, y, false, false)
+    console.log(count + ": 1")
+    count += checkDiagonal(isPlayer1, x, y, true, false)
+    console.log(count + ": 2")
+    count += checkDiagonal(isPlayer1, x, y, false, true)
+    console.log(count + ": 3")
+    count += checkDiagonal(isPlayer1, x, y, true, true)
+    console.log(count + ": 4")
+    count += checkHorVert(isPlayer1, x, y, null, false)
+    console.log(count + ": 5")
+    count += checkHorVert(isPlayer1, x, y, null, true)
+    console.log(count + ": 6")
+    count += checkHorVert(isPlayer1, x, y, false, null)
+    console.log(count + ": 7")
+    count += checkHorVert(isPlayer1, x, y, true, null)
+    console.log(count + ": 8")
+
+
+    if (count > 0) {
+        return true
+    } else {
+        return false
+    }
 }
 
 player1TokenHolder.addEventListener("mousedown", (event) => {
