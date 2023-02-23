@@ -121,7 +121,63 @@ function placeDiagonal(team, x, y) {
             board.grid[x + i][y + i] = team
         }
     }
- }
+}
+
+
+
+//two-dimentional array
+let array = [];
+
+//8 rows
+for (let i = 0; i < 8; i++) {
+    array[i] = [];
+    //8 columns
+    for (let j = 0; j < 8; j++) {
+    array[i][j] = false;
+    }
+}
+// Set some values to true
+array[1][1] = true;
+array[2][0] = true;
+
+
+let player1TotalTokens = 0;
+let player2TotalTokens = 0;
+
+  // Get a reference to the div element
+const start_container = document.getElementById('start_container');
+
+  // Attach a click event listener to the div element
+start_container.addEventListener('click', function() {
+    // Call your function here
+    checkWin(array);
+});
+
+
+
+
+// Print the array
+// console.log(array);
+
+function checkWin(array) {
+    // Loop through the rows of the array
+for (let i = 0; i < array.length; i++) {
+    // Loop through the columns of the current row
+    for (let j = 0; j < array[i].length; j++) {
+      // Check if the current element is false
+            if (array[i][j] === false) {
+            player2TotalTokens++;
+            } else {
+                player1TotalTokens++;
+            }
+        }
+    }
+    console.log("player 1 total token(true/black)");
+    console.log(player1TotalTokens);
+    console.log("player 2 total token(white/black)");
+    console.log(player2TotalTokens);
+}
+
 
 window.onload = generateBoard()
 window.onload = fillTokens()
