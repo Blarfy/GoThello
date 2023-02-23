@@ -269,7 +269,7 @@ function checkDiagonal(team, x, y, dirX, dirY) {
 
     let count = 0
     let capture = false
-    for (i = 1; i < loops; i++) {
+    for (i = 1; i <= loops; i++) {
         if (board.grid[x + i * xPath][y + i * yPath] !== team && board.grid[x + i * xPath][y + i * yPath] !== null) {
             count++
         } else if (board.grid[x + i * xPath][y + i * yPath] === team) {
@@ -312,7 +312,7 @@ function checkHorVert(team, x, y, dirX, dirY) {
         } else loops = board.grid.length - y - 1
         let count = 0
         let capture = false
-        for (i = 1; i < loops; i++) {
+        for (i = 1; i <= loops; i++) {
             if (board.grid[x][y + i * yPath] !== team && board.grid[x][y + i * yPath] !== null) {
                 count++
             } else if (board.grid[x][y + i * yPath] === team) {
@@ -329,7 +329,7 @@ function checkHorVert(team, x, y, dirX, dirY) {
         } else loops = board.grid.length - x - 1
         let count = 0
         let capture = false
-        for (i = 1; i < loops; i++) {
+        for (i = 1; i <= loops; i++) {
             if (board.grid[x + i * xPath][y] !== team && board.grid[x + i * xPath][y] !== null) {
                 count++
             } else if (board.grid[x + i * xPath][y] === team) {
