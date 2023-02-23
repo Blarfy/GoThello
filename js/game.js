@@ -375,13 +375,13 @@ let player1TotalTokens = 0;
 let player2TotalTokens = 0;
 
   // Get a reference to the div element
-const start_container = document.getElementById('start_container');
+// const start_container = document.getElementById('start_container');
 
   // Attach a click event listener to the div element
-start_container.addEventListener('click', function() {
-    // Call your function here
-    checkWin(array);
-});
+// start_container.addEventListener('click', function() {
+//     // Call your function here
+//     checkWin(array);
+// });
 
 
 
