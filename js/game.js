@@ -330,25 +330,29 @@ function placeDiagonal(team, x, y) {
 
     if (countUL > 0) {
         for (i = 1; i <= countUL; i++) {
-            board.grid[x - i][y - i] = team
+            // board.grid[x - i][y - i] = team
+            flipToken(x - i, y - i)
         }
     }
 
     if (countUR > 0) {
         for (i = 1; i <= countUR; i++) {
-            board.grid[x + i][y - i] = team
+            // board.grid[x + i][y - i] = team
+            flipToken(x + i, y - i)
         }
     }
 
     if (countDL > 0) {
         for (i = 1; i <= countDL; i++) {
-            board.grid[x - i][y + i] = team
+            // board.grid[x - i][y + i] = team
+            flipToken(x - i, y + i)
         }
     }
 
     if (countDR > 0) {
         for (i = 1; i <= countDR; i++) {
-            board.grid[x + i][y + i] = team
+            // board.grid[x + i][y + i] = team
+            flipToken(x + i, y + i)
         }
     }
 }
@@ -372,25 +376,29 @@ function placeHorVert(team, x, y) {
 
     if (countL > 0) {
         for (i = 1; i <= countL; i++) {
-            board.grid[x][y - i] = team
+            // board.grid[x][y - i] = team
+            flipToken(x, y - i)
         }
     }
 
     if (countR > 0) {
         for (i = 1; i <= countR; i++) {
-            board.grid[x][y + i] = team
+            // board.grid[x][y + i] = team
+            flipToken(x, y + i)
         }
     }
 
     if (countU > 0) {
         for (i = 1; i <= countU; i++) {
-            board.grid[x - i][y] = team
+            // board.grid[x - i][y] = team
+            flipToken(x - i, y)
         }
     }
 
     if (countD > 0) {
         for (i = 1; i <= countD; i++) {
-            board.grid[x + i][y] = team
+            // board.grid[x + i][y] = team
+            flipToken(x + i, y)
         }
     }
 }
