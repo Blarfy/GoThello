@@ -378,28 +378,33 @@ function placeDiagonal(team, x, y) {
     if (countUL > 0) {
         for (i = 1; i <= countUL; i++) {
             // board.grid[x - i][y - i] = team
-            flipToken(x - i, y - i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x - adjust, y - adjust)}, 50 * i)
+            
         }
     }
 
     if (countUR > 0) {
         for (i = 1; i <= countUR; i++) {
             // board.grid[x + i][y - i] = team
-            flipToken(x + i, y - i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x + adjust, y - adjust)}, 50 * i)
         }
     }
 
     if (countDL > 0) {
         for (i = 1; i <= countDL; i++) {
             // board.grid[x - i][y + i] = team
-            flipToken(x - i, y + i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x - adjust, y + adjust)}, 50 * i)
         }
     }
 
     if (countDR > 0) {
         for (i = 1; i <= countDR; i++) {
             // board.grid[x + i][y + i] = team
-            flipToken(x + i, y + i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x + adjust, y + adjust)}, 50 * i)
         }
     }
 }
@@ -480,28 +485,32 @@ function placeHorVert(team, x, y) {
     if (countL > 0) {
         for (i = 1; i <= countL; i++) {
             // board.grid[x][y - i] = team
-            flipToken(x, y - i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x, y - adjust)}, 100 * i)
         }
     }
 
     if (countR > 0) {
         for (i = 1; i <= countR; i++) {
             // board.grid[x][y + i] = team
-            flipToken(x, y + i)
+            let adjust = i;
+            setTimeout(() => {flipToken(x, y + adjust)}, 100 * i)
         }
     }
 
     if (countU > 0) {
         for (i = 1; i <= countU; i++) {
             // board.grid[x - i][y] = team
-            flipToken(x - i, y)
+            let adjust = i;
+            setTimeout(() => {flipToken(x - adjust, y)}, 100 * i)
         }
     }
 
     if (countD > 0) {
         for (i = 1; i <= countD; i++) {
             // board.grid[x + i][y] = team
-            flipToken(x + i, y)
+            let adjust = i;
+            setTimeout(() => {flipToken(x + adjust, y)}, 100 * i)
         }
     }
 }
