@@ -269,7 +269,7 @@ function checkDiagonal(team, x, y, dirX, dirY) {
 
     let count = 0
     let capture = false
-    for (i = 1; i < loops; i++) {
+    for (i = 1; i <= loops; i++) {
         console.log("Diagonal -----------------")
         console.log("xPath: " + xPath)
         console.log("yPath: " + yPath)
@@ -318,7 +318,7 @@ function checkHorVert(team, x, y, dirX, dirY) {
         } else loops = board.grid.length - y - 1
         let count = 0
         let capture = false
-        for (i = 1; i < loops; i++) {
+        for (i = 1; i <= loops; i++) {
             console.log("Vertical -----------------")
             console.log("xPath: " + xPath)
             console.log("yPath: " + yPath)
@@ -340,7 +340,7 @@ function checkHorVert(team, x, y, dirX, dirY) {
         } else loops = board.grid.length - x - 1
         let count = 0
         let capture = false
-        for (i = 1; i < loops; i++) {
+        for (i = 1; i <= loops; i++) {
             console.log("Horizontal -----------------")
             console.log("xPath: " + xPath)
             console.log("yPath: " + yPath)
