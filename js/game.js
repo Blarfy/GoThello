@@ -140,7 +140,10 @@ const tokenClickDrag = (isPlayer1, token_in) => {
                 let isGameOver = checkGameOver()
                 if (isVsComputer && !isGameOver) {
                     console.log("Computer's turn")
-                    aiTurn()
+                    setTimeout(() => {
+                        aiTurn()
+                    }, 1000)
+                    
                 }
             } else {
                 console.log("Nope")
@@ -606,3 +609,16 @@ function aiTurn() {
 window.onload = generateBoard()
 window.onload = fillTokens()
 window.onload = checkMode()
+
+let inputList = []
+document.addEventListener("keyup", (event) => {
+    console.log(event.key)
+    inputList.push(event.key)
+    if (inputList.length > 10) {
+        inputList.shift()
+    }
+    if (inputList.join("") == "ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba") {
+        applyEventListeners()
+        console.log("cheat code activated")
+    }
+})
