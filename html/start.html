@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    `   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/start.css">
-        <script src="../js/board.js" defer></script>
-        <script src="../js/game.js" defer></script>
-    </head>
-        <body>
-            <h1>Welcome to Othello</h1>
-            <div class="images_container">
-                <div class="start_container"  onclick="location.href='game.html';">
-                    <img class="start" src="../assets/P_vs_P.jpg"/>
-                </div>
-                
-                <div class="start_container"  onclick="location.href='game.html';">
-                    <img class="start" src="../assets/P_vs_AI.jpg"/>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/start.css">
+    <script src="../js/board.js" defer></script>
+    <script>
+        let inputList = []
+        document.addEventListener("keyup", (event) => {
+            inputList.push(event.key)
+            if (inputList.length > 10) {
+                inputList.shift()
+            }
+            if (inputList.join("") == "ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba") {
+                document.getElementById("container").style.display = "block"
+                document.getElementById("container-2").style.display = "none"
+            }
+        })
+    </script>
+</head>
+
+<body>
+    <div id="container-2">
+        <h1 id="title">Welcome to Othello</h1>
+        <div class="images_container">
+            <div class="start_container" onclick="location.href='game.html?computer=false';">
+                <img class="start" src="../assets/P_vs_P.jpg" />
+            </div>
+
+            <div class="start_container" onclick="location.href='game.html?computer=true';">
+                <img class="start" src="../assets/P_vs_AI.jpg" />
+            </div>
+        </div>
+    </div>
+    <div id="container">
+        <header>
+
+        </header>
+        <section>
+            <div class="vert-flex">
+                <h1>Welcome to Othello</h1>
+                <div class="hor-flex">
+                    <a href="game.html?computer=true">
+                        <div class="button">Single Player</div>
+                    </a>
+                    <a href="game.html?computer=false">
+                        <div class="button">Multiplayer</div>
+                    </a>
                 </div>
             </div>
-        </body>
+        </section>
+        <footer>
+
+        </footer>
+    </div>
+</body>
+
 </html>

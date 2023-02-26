@@ -12,7 +12,7 @@ h1 {
     width: 640px; /* Can be in percentage also. */
     height: auto;
     margin: 0 auto;
-    /* padding: 10px; */
+    padding: 10px;
 }
 
 .start{
@@ -27,4 +27,92 @@ h1 {
 .images_container {
     display: flex;
     justify-content: center;
+}
+
+:root {
+    --background-color: #312e2b;
+    --foreground-color: #272522;
+    --board-color: #834e09;
+    --middleground-color: #613b09;
+    --lining-color: #432a09;
+    --text-color: #331f06;
+}
+
+#container {
+    display: none;
+}
+
+.button {
+    width: 120px;
+    height: 40px;
+    user-select: none;
+    background-color: #95bb4a;
+    border-radius: 5px;
+    color: black;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    padding: 10px;
+}
+
+.button:hover {
+    filter: brightness(75%);
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header {
+    --padding: 10px;
+    height: 50px;
+    padding: var(--padding);
+    width: calc(100% - (2 * var(--padding)));
+    background-color: var(--foreground-color);
+}
+
+section {
+    min-height: 80vh;
+    height: calc(100vh - (2 * 70px));
+    width: 100%;
+    background-color: var(--background-color);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+footer {
+    --padding: 10px;
+    height: 50px;
+    padding: var(--padding);
+    width: calc(100% - (2 * var(--padding)));
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--foreground-color);
+}
+
+h1 {
+    font-size: 70px;
+    color:white;
+    text-align: center;
+}
+
+.vert-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.hor-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
 }

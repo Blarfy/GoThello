@@ -2,6 +2,7 @@ const gameBoard = document.getElementById("game-board")
 
 let board = new Board();
 let turns = 0;
+let isVsComputer = false;
 
 const generateBoard = () => {
     for (let index_Y = 0; index_Y < board.grid.length; index_Y++) {
@@ -61,6 +62,34 @@ const fillTokens = () => {
     }
 }
 
+const checkMode = () => {
+    let params = new URLSearchParams(window.location.search)
+    if (params.get("computer") === "true") {
+        isVsComputer = true
+        popup("You are playing against the computer")
+    } else {
+        isVsComputer = false
+    }
+}
+
+const howPlay = () => {
+    let message = ` 
+    How to play Othello:
+    The game starts with 4 tokens in the middle of the board.
+    The player with the black token goes first.
+    The player can place a token on any empty tile that can capture an enemy token.
+    The player can capture an enemy token by placing tokens around an enemy token(s) in a straight line.
+    If the player can place a token on any tile, they must.
+    If the player cannot place a token on any tile, they must skip their turn.
+    The game ends when neither player can place a token on any tile.
+    The player with the most tokens wins.
+    `
+
+    popup(message)
+}
+
+
+
 // This function alternates between player 1 and player 2
 // Should add a check to see if the player can make a move
 // If not, the turn should be skipped, turn++
@@ -108,6 +137,11 @@ const tokenClickDrag = (isPlayer1, token_in) => {
                 placeDiagonal(isPlayer1, x, y)
                 placeHorVert(isPlayer1, x, y)
                 turns++
+                let isGameOver = checkGameOver()
+                if (isVsComputer && !isGameOver) {
+                    console.log("Computer's turn")
+                    aiTurn()
+                }
             } else {
                 console.log("Nope")
                 token.classList.remove("token")
@@ -119,29 +153,19 @@ const tokenClickDrag = (isPlayer1, token_in) => {
             token.classList.remove("token")
             token.classList.add("token-sideways")
             tokenHolder.appendChild(token)
-            
         }
     }, {once: true})
 }
 
 const canPlace = (isPlayer1, x, y) => {
     let count = checkDiagonal(isPlayer1, x, y, false, false)
-    console.log(count + ": 1")
     count += checkDiagonal(isPlayer1, x, y, true, false)
-    console.log(count + ": 2")
     count += checkDiagonal(isPlayer1, x, y, false, true)
-    console.log(count + ": 3")
     count += checkDiagonal(isPlayer1, x, y, true, true)
-    console.log(count + ": 4")
     count += checkHorVert(isPlayer1, x, y, null, false)
-    console.log(count + ": 5")
     count += checkHorVert(isPlayer1, x, y, null, true)
-    console.log(count + ": 6")
     count += checkHorVert(isPlayer1, x, y, false, null)
-    console.log(count + ": 7")
     count += checkHorVert(isPlayer1, x, y, true, null)
-    console.log(count + ": 8")
-
 
     if (count > 0) {
         return true
@@ -156,8 +180,8 @@ player1TokenHolder.addEventListener("mousedown", (event) => {
     } else {
         isPlayer1 = false
     }
-    console.log(event.target)
-    console.log(player1TokenHolder)
+    // console.log(event.target)
+    // console.log(player1TokenHolder)
     if (event.target != player1TokenHolder && event.target != player2TokenHolder) {
         tokenClickDrag(isPlayer1, event.target)
     }
@@ -168,15 +192,22 @@ player2TokenHolder.addEventListener("mousedown", (event) => {
     } else {
         isPlayer1 = false
     }
-    console.log(event.target)
-    console.log(player2TokenHolder)
+    // console.log(event.target)
+    // console.log(player2TokenHolder)
     if (event.target != player1TokenHolder && event.target != player2TokenHolder) {
         tokenClickDrag(isPlayer1, event.target)
     }
 })
 
 const skipTurn = () => {
-    popupConfirm("Are you sure you want to skip your turn?", () => { turns++} )
+    popupConfirm("Are you sure you want to skip your turn?", () => { 
+        turns++
+        let isGameOver = checkGameOver()
+        if (isVsComputer && !isGameOver) {
+            console.log("Computer's turn")
+            aiTurn()
+        }
+    } )
 }
 
 const renderBoard = () => {
@@ -196,6 +227,25 @@ const renderBoard = () => {
                 tile.appendChild(token)
             }
         }
+    }
+}
+
+const checkGameOver = () => {
+    let nulls = 0
+    for (let index_Y = 0; index_Y < board.grid.length; index_Y++) {
+        for (let index_X = 0; index_X < board.grid[index_Y].length; index_X++) {
+            if (board.grid[index_X][index_Y] === null) {
+                nulls++
+            }
+        }
+    }
+
+    if (nulls === 0) {
+        setTimeout(() => {checkWin(board.grid)}, 1000)
+        
+        return true
+    } else {
+        return false
     }
 }
 
@@ -230,7 +280,7 @@ const applyEventListeners = () => {
 
 
 
-/**
+/*
  * checks if there is a diagonal capture and returns the number of tiles captured
  * call this function four times each time with a different direction
  * do not call this function when placing a tile, use placeDiagonal instead
@@ -270,16 +320,10 @@ function checkDiagonal(team, x, y, dirX, dirY) {
     let count = 0
     let capture = false
     for (i = 1; i <= loops; i++) {
-        console.log("Diagonal -----------------")
-        console.log("xPath: " + xPath)
-        console.log("yPath: " + yPath)
-        console.log("I: " + i)
-        console.log("Loops: " + loops)
         if (board.grid[x + i * xPath][y + i * yPath] !== team && board.grid[x + i * xPath][y + i * yPath] !== null) {
             count++
         } else if (board.grid[x + i * xPath][y + i * yPath] === team) {
             capture = true
-            console.log("CAPTURE")
             break
         } else break
     }
@@ -319,11 +363,6 @@ function checkHorVert(team, x, y, dirX, dirY) {
         let count = 0
         let capture = false
         for (i = 1; i <= loops; i++) {
-            console.log("Vertical -----------------")
-            console.log("xPath: " + xPath)
-            console.log("yPath: " + yPath)
-            console.log("I: " + i)
-            console.log("Loops: " + loops)
             if (board.grid[x][y + i * yPath] !== team && board.grid[x][y + i * yPath] !== null) {
                 count++
             } else if (board.grid[x][y + i * yPath] === team) {
@@ -341,11 +380,6 @@ function checkHorVert(team, x, y, dirX, dirY) {
         let count = 0
         let capture = false
         for (i = 1; i <= loops; i++) {
-            console.log("Horizontal -----------------")
-            console.log("xPath: " + xPath)
-            console.log("yPath: " + yPath)
-            console.log("I: " + i)
-            console.log("Loops: " + loops)
             if (board.grid[x + i * xPath][y] !== team && board.grid[x + i * xPath][y] !== null) {
                 count++
             } else if (board.grid[x + i * xPath][y] === team) {
@@ -408,28 +442,6 @@ function placeDiagonal(team, x, y) {
         }
     }
 }
-
-
-
-//two-dimentional array
-let array = [];
-
-//8 rows
-for (let i = 0; i < 8; i++) {
-    array[i] = [];
-    //8 columns
-    for (let j = 0; j < 8; j++) {
-    array[i][j] = false;
-    }
-}
-// Set some values to true
-array[1][1] = true;
-array[2][0] = true;
-
-
-let player1TotalTokens = 0;
-let player2TotalTokens = 0;
-
   // Get a reference to the div element
 // const start_container = document.getElementById('start_container');
 
@@ -446,22 +458,34 @@ let player2TotalTokens = 0;
 // console.log(array);
 
 function checkWin(array) {
-    // Loop through the rows of the array
-for (let i = 0; i < array.length; i++) {
+    let player1TotalTokens = 0;
+    let player2TotalTokens = 0;
+        // Loop through the rows of the array
+    for (let i = 0; i < array.length; i++) {
     // Loop through the columns of the current row
-    for (let j = 0; j < array[i].length; j++) {
-      // Check if the current element is false
+        for (let j = 0; j < array[i].length; j++) {
+        // Check if the current element is false
             if (array[i][j] === false) {
-            player2TotalTokens++;
-            } else {
+                player2TotalTokens++;
+            } else if (array[i][j] === true) {
                 player1TotalTokens++;
             }
         }
+    }
+    if (player1TotalTokens + player2TotalTokens != 64) {
+        return;
     }
     console.log("player 1 total token(true/black)");
     console.log(player1TotalTokens);
     console.log("player 2 total token(white/black)");
     console.log(player2TotalTokens);
+    if (player1TotalTokens > player2TotalTokens) {
+        popup("player 1 wins with " + player1TotalTokens + " tokens\n" + "player 2 has " + player2TotalTokens + " tokens", () => {location.href = "start.html"}, "Play Again");
+    } else if (player1TotalTokens < player2TotalTokens) {
+        popup("player 2 wins with " + player2TotalTokens + " tokens\n" + "player 1 has " + player1TotalTokens + " tokens", () => {location.href = "start.html"}, "Play Again");
+    } else {
+        popup("it's a tie");
+    }
 }
 
 
@@ -560,13 +584,25 @@ function aiTurn() {
         //place tile
         board.grid[bestX][bestY] = false
         placeDiagonal(false, bestX, bestY)
-        checkHorVertCapture(false, bestX, bestY)
+        checkHorVert(false, bestX, bestY)
+        placeHorVert(false, bestX, bestY)
+        if (player2TokenHolder.children.length <= 0) {
+            player1TokenHolder.removeChild(player1TokenHolder.lastElementChild)
+            player1TokenCount--
+        } else {
+            player2TokenHolder.removeChild(player2TokenHolder.lastElementChild)
+            player2TokenCount--
+        }
+        renderBoard()
         turns++
+        checkGameOver()
     } else {
         //no moves, skip turn
         turns++
+        checkGameOver()
     }
 }
 
 window.onload = generateBoard()
 window.onload = fillTokens()
+window.onload = checkMode()
