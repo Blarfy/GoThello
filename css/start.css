@@ -29,6 +29,10 @@ h1 {
     justify-content: center;
 }
 
+#container-2 {
+    display: none;
+}
+
 /* Delinieatpr ================================================================================= */
 
 :root {
@@ -41,7 +45,7 @@ h1 {
 }
 
 #container {
-    display: none;
+    display: block;
 }
 
 .button {

@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/start.css">
-    <script src="../js/board.js" defer></script>
     <script>
         let inputList = []
         document.addEventListener("keyup", (event) => {
@@ -16,8 +15,18 @@
                 inputList.shift()
             }
             if (inputList.join("") == "ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba") {
-                document.getElementById("container").style.display = "block"
-                document.getElementById("container-2").style.display = "none"
+                let titlePage1 = document.getElementById("container");
+                let titlePage2 = document.getElementById("container-2");
+                if (titlePage1.style.display == "block") {
+                    titlePage1.style.display = "none"
+                    titlePage2.style.display = "block"
+                } else if (titlePage2.style.display == "block") {
+                    titlePage1.style.display = "block"
+                    titlePage2.style.display = "none"
+                } else {
+                    titlePage1.style.display = "none"
+                    titlePage2.style.display = "block"
+                }
             }
         })
     </script>
